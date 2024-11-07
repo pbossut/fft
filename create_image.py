@@ -204,7 +204,26 @@ def gaussian(image, dx, dy, sigma, center_pattern, tiled):
         image[row,col] = 0.0
 
 if __name__ == "__main__":
+  help_message = """Create simple B&W test images:
+1: Gradient
+2: Checkerboard
+3: Cones
+4: Helices
+5: Spheres
+6: Sines
+7: Gaussians
+w, a, s, d: Control the x,y position of the P0 pattern origin point
+W, A, S, D: Control the x,y position of the P1 pattern origin point
+i: Save the image to disk. The name will be auto generated as Image_<number>.png
+c: Toggle center pattern / don't center pattern
+t: Toggle tile / don't tile image
+h: Display this message
+f: Reduce the number of tiles by 1
+F: Increase the number of tiles by 1
+r: Reset P0 to (0, 0), P1 to (width, width) and tiles to 1
+q: Quit the program"""
   do_something = True
+  # Init image generation parameters
   save_images_count = 0
   width = 512
   image = np.zeros((width, width), np.float32)
@@ -216,6 +235,7 @@ if __name__ == "__main__":
   draw_type = ord('2')
   center_pattern = True
   tiled = True
+  # Loop till the user hits 'q'
   while do_something:
     dx = max((x1-x0)//tiles, 1)
     dy = max((y1-y0)//tiles, 1)
@@ -272,5 +292,7 @@ if __name__ == "__main__":
       center_pattern = not center_pattern
     elif key == ord('t'):
       tiled = not tiled
+    elif key == ord('h'):
+      print(help_message)
 
   cv2.destroyAllWindows()
