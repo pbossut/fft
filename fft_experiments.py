@@ -113,7 +113,29 @@ def ConvertModulePhasetoBGR(module, phase):
   return cv2.cvtColor(image, cv2.COLOR_HSV2BGR)
 
 if __name__ == "__main__":
+  help_message = """Create simple B&W test images:
+1: Gradient
+2: Checkerboard
+3: Cones
+4: Helices
+5: Spheres
+6: Sines
+7: Gaussians
+8: Image (path hardcoded in code, image converted to grayscale)
+w, a, s, d: Control the x,y position of the P0 pattern origin point
+W, A, S, D: Control the x,y position of the P1 pattern origin point
+i: Save the colored FFT image to disk. The name will be auto generated as FFT_<number>.png
+c: Toggle center pattern / don't center pattern
+t: Toggle tile / don't tile image
+f: Toggle filter on phase
+m: Toggle filter on module
+g: Decrease size of filter
+G: Increase size of filter
+r: Reset P0 to (0, 0), P1 to (width, width) and tiles to 1
+h: Display this message
+q: Quit the program"""
   do_something = True
+  # Init image generation parameters
   x0 = y0 = 10
   x1 = y1 = 500
   increment = 10
@@ -125,9 +147,10 @@ if __name__ == "__main__":
   filter_phase = False
   filter_module = False
   save_count = 0
+  # Loop till the user hits 'q'
   while do_something:
     # Load or compute an image (grayscale)
-    image = GetImage(draw_type, (x0,y0), (x1,y1), dx, dy, center_pattern, tiled, "TestGRF.jpg")
+    image = GetImage(draw_type, (x0,y0), (x1,y1), dx, dy, center_pattern, tiled, "flower.jpg")
     # Compute its FFT
     img_fft = ComputeFft(image)
     # Compute the module and phase
@@ -190,7 +213,7 @@ if __name__ == "__main__":
       filter_module = not filter_module
     elif key == ord('g'):
       filter_size -= 10
-    elif key == ord('h'):
+    elif key == ord('G'):
       filter_size += 10
     elif key == ord('i'):
       # Save the colorized FFT
@@ -198,6 +221,8 @@ if __name__ == "__main__":
       print('Save FFT image : ', name)
       cv2.imwrite(name,fft_combi)
       save_count += 1
+    elif key == ord('h'):
+      print(help_message)
 
   cv2.destroyAllWindows()
 
